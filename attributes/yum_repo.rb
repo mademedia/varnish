@@ -15,8 +15,9 @@
 # limitations under the License.
 #
 
-default["varnish"]["yum_repo"]["conf_file"] = "/etc/yum.repos.d/varnish.conf"
+default["varnish"]["yum_repo"]["conf_file"] = "/etc/yum.repos.d/varnish.repo"
 default["varnish"]["yum_repo"]["base_uri"] = "http://repo.varnish-cache.org/redhat/"
+default["varnish"]["yum_repo"]["override_platform_version"] = nil
 default["varnish"]["yum_repo"]["repositories"] = {
 	"varnish-2.1" => [5],
 	"varnish-3.0" => [5, 6],

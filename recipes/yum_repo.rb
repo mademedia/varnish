@@ -29,18 +29,20 @@ include_recipe "yum"
 # Build up yum config based on support RHEL versions
 ## By default it only enables the repo if node['varnish']['version'] matches the version number in the repo name
 ## This permits people to override this later with their own cookbooks
+varnish_yum_platform_version = (node["varnish"]["yum_repo"]["override_platform_version"].nil? && node['platform_version'].to_i) || node["varnish"]["yum_repo"]["override_platform_version"]
 varnish_yum_conf = ""
+
 node["varnish"]["yum_repo"]["repositories"].each do |repo, platformversions|
-	if platformversions.include? node['platform_version'].to_i
+	if platformversions.include? varnish_yum_platform_version.to_i
 		if "varnish-" + node['varnish']['version'] == repo
 			varnish_repo_enabled = 1
 		else
 			varnish_repo_enabled = 0
 		end
-		varnish_yum_conf += <<-END.gsub(/^\w+/,'')
+		varnish_yum_conf += <<-END.gsub(/^[\t ]+/,'')
 		[#{repo}]
-		name=#{repo} for Enterprise Linux #{node['platform_version'].to_i} - $basearch
-		baseurl=#{node["varnish"]["yum_repo"]["base_uri"]}/#{repo}/el#{node['platform_version'].to_i}/$basearch
+		name=#{repo} for Enterprise Linux #{varnish_yum_platform_version.to_i} - $basearch
+		baseurl=#{node["varnish"]["yum_repo"]["base_uri"]}/#{repo}/el#{varnish_yum_platform_version.to_i}/$basearch
 		enabled=#{varnish_repo_enabled}
 		gpgcheck=0
 		
