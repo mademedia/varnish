@@ -44,6 +44,7 @@ node["varnish"]["yum_repo"]["repositories"].each do |repo, platformversions|
 		name=#{repo} for Enterprise Linux #{varnish_yum_platform_version.to_i} - $basearch
 		baseurl=#{node["varnish"]["yum_repo"]["base_uri"]}/#{repo}/el#{varnish_yum_platform_version.to_i}/$basearch
 		enabled=#{varnish_repo_enabled}
+		priority=#{node["varnish"]["yum_repo"]["priority"]}
 		gpgcheck=0
 		
 		END
