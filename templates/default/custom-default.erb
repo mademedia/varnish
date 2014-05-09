@@ -26,7 +26,7 @@ DAEMON_OPTS="-a <%= node['varnish']['listen_address'] %>:<%= node['varnish']['li
               -T <%= node['varnish']['admin_listen_address'] %>:<%= node['varnish']['admin_listen_port'] %> \
               -u <%= node['varnish']['user'] %> -g <%= node['varnish']['group'] %> \
               -t <%= node['varnish']['ttl'] %> \
-              -w <%= node['varnish']['min_threads'] %>,<%= node['varnish']['max_threads'] %>,<%= node['varnish']['thread_timeout'] %> \
+              <% unless node['varnish']['version'] == "4.0" %>-w <%= node['varnish']['min_threads'] %>,<%= node['varnish']['max_threads'] %>,<%= node['varnish']['thread_timeout'] %><% end %> \
               -s <%= node['varnish']['storage'] %>,<%= (node['varnish']['storage']=='file')?"#{node['varnish']['storage_file']},":'' %><%= node['varnish']['storage_size'] %> \
               -S <%= node['varnish']['secret_file'] %> \
               -n $INSTANCE"
