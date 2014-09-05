@@ -29,4 +29,7 @@ DAEMON_OPTS="-a <%= node['varnish']['listen_address'] %>:<%= node['varnish']['li
               <% unless node['varnish']['version'] == "4.0" %>-w <%= node['varnish']['min_threads'] %>,<%= node['varnish']['max_threads'] %>,<%= node['varnish']['thread_timeout'] %><% end %> \
               -s <%= node['varnish']['storage'] %>,<%= (node['varnish']['storage']=='file')?"#{node['varnish']['storage_file']},":'' %><%= node['varnish']['storage_size'] %> \
               -S <%= node['varnish']['secret_file'] %> \
+              <% node['varnish']['daemon_parameters'].uniq.each do |daemon_parameter| -%>
+              -p <%= daemon_parameter %> \
+              <% end -%>
               -n $INSTANCE"
